@@ -13,7 +13,6 @@ from django.db              import IntegrityError, transaction, connection
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 
-print(connection.queries)
 class AccountView(View):
     def get(self, request):
         return JsonResponse({'message':[
@@ -30,8 +29,8 @@ class AccountView(View):
 
 class SignUpView(View):
     def post(self, request):
-        data = json.loads(request.body)
         try:
+            data = json.loads(request.body)
             validate_email(data['email'])
             if Account.objects.filter(email = data['email']).exists():
                 return JsonResponse({'message':'이미 존재하는 메일 주소 입니다.'}, status = 400)
@@ -67,6 +66,8 @@ class SignUpView(View):
 
         except KeyError:
             return JsonResponse({"message":"☠️  혹시 빼놓은 키가 있을까요? 혹은 잘못된 키이름을 전달하신것 아닐까요?"}, status = 400)
+        except json.JSONDecodeError:
+            return JsonResponse({"message":"POST 에는 body에 json데이터를 주셔야 합니다. 확인해 주세요."}, status = 400)
 
     def get(self, request):
         message =[
@@ -130,30 +131,6 @@ class SignInView(View):
         return JsonResponse({'message':message}, status = 200)
 
 class ProfileView(View):
-    @login_required
-    def post(self, request):
-        try:
-            if request.user.profile:
-                return JsonResponse({'message' : '🧐 프로필이 존재합니다'}, status = 400)
-
-            with transaction.atomic():
-                data    = json.loads(request.body)
-                code    = uuid.uuid4()
-                profile = Profile(
-                    address = data.get('address', None),
-                    hobby   = data.get('hobby', None),
-                    code    = code
-                )
-                profile.save()
-
-                request.user.profile = profile
-                request.user.save()
-
-            return JsonResponse([{'message' : '😎 프로필 등록이 완료 되었습니다.'}, {'code':code}], safe = False, status = 200)
-
-        except KeyError:
-            return JsonResponse({'message' : '☠️  혹시 빼놓은 키가 있을까요? 혹은 잘못된 키이름을 전달하신것 아닐까요?'}, status = 400)
-
     @login_required
     def get(self, request, code = None):
         if code:
