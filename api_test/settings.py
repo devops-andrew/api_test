@@ -13,10 +13,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 import my_settings
 
-import logging
-logger=logging.getLogger('django.db.backends')
-logger.setLevel(logging.DEBUG)
-logger.addHandler(logging.StreamHandler())
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -109,23 +105,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGGING = {
-    'disable_existing_loggers': False,
-    'version': 1,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'level': 'DEBUG',
-        },
-    },
-    'loggers': {
-        'django.db.backends': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-    },
-}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
