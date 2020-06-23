@@ -1,4 +1,5 @@
-
+#custom-settings
+my_settings.py
 # pyenv
 .python-version
 
