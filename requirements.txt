@@ -2,7 +2,7 @@ asgiref==3.2.3
 bcrypt==3.1.7
 certifi==2019.11.28
 cffi==1.14.0
-Django==3.0.3
+Django==3.0.7
 django-cors-headers==3.2.1
 gunicorn==20.0.4
 pycparser==2.19
