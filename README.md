@@ -6,3 +6,6 @@
   SECRET = {'secret':'YOU_HAVE_TO_GENERATE_RANDOM_SECRET_KEY'}
 ```
 - setting_up.sh를 실행해 주세요.
+```bash
+source setting_up.sh
+```
