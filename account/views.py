@@ -89,8 +89,8 @@ class SignUpView(View):
 
 class SignInView(View):
     def post(self, request):
-        data = json.loads(request.body)
         try:
+            data = json.loads(request.body)
             if Account.objects.filter(email = data['email']).exists():
                 user = Account.objects.get(email = data['email'])
 
@@ -113,7 +113,8 @@ class SignInView(View):
 
         except KeyError:
             return JsonResponse({'message' : '☠️  혹시 빼놓은 키가 있을까요? 혹은 잘못된 키이름을 전달하신것 아닐까요?'}, status = 400)
-
+        except json.JSONDecodeError:
+            return JsonResponse({'message' : '😱 로그인 정보를 전달해 주세요!'},status = 400)
 
     def get(self, request):
         message =['로그인 입니다😆 .로그인은 GET일까요? POST일까요?🤔 ',
@@ -165,8 +166,9 @@ class ProfileView(View):
             return JsonResponse({'message' : '코드를 확인해 주세요'}, status = 404)
 
         except KeyError:
-            return JsonResponse({"message":"☠️  혹시 빼놓은 키가 있을까요? 혹은 잘못된 키이름을 전달하신것 아닐까요?"}, status = 400)
-
+            return JsonResponse({'message':'☠️  혹시 빼놓은 키가 있을까요? 혹은 잘못된 키이름을 전달하신것 아닐까요?'}, status = 400)
+        except json.JSONDecodeError:
+            return JsonResponse({'message':'🥶수정을 위해 넘겨야 하는 키는 hobby, address 두개입니다.'}, status = 400)
     @login_required
     def delete(self, request, code):
         if Profile.objects.filter(code = code).exists():

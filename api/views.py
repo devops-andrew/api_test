@@ -15,7 +15,6 @@ MISSIONS = {
 
 class MissionView(View):
     def get(self, request):
-        print(request.GET)
         category = request.GET.get('category', None)
         try:
             if category:
