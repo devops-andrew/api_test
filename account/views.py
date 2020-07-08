@@ -153,7 +153,9 @@ class ProfileView(View):
         try:
             if Profile.objects.filter(code = code).exists():
                 data = json.loads(request.body)
-                Profile.objects.filter(code = code).update(**data)
+                hobby = data.get('hobby', None)
+                address = data.get('address', None)
+                Profile.objects.filter(code = code).update(hobby=hobby, address = address)
                 return JsonResponse({
                     'message' : [
                         '🥳 변경이 완료 되었습니다.',
